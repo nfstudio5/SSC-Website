@@ -1,0 +1,457 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shira Sue Carmi</title>
+<meta name="description" content="Shira Sue Carmi — advisor to founders and CEOs. Brooklyn, New York.">
+<meta name="theme-color" content="#731A45">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400..700;1,6..96,400..700&family=Courier+Prime:ital@0;1&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --plum: #731A45;
+    --plum-deep: #5E1238;
+    --gold: #C8901A;
+    --cream: #F2E7D5;
+    --ochre: #8A5F0F;          /* gold, deepened for small text on paper */
+    --rule: rgba(115, 26, 69, .25);
+    --display: "Bodoni Moda", "Didot", "Bodoni 72", serif;
+    --type: "Courier Prime", "Courier New", monospace;
+    --pad: clamp(20px, 2.6vw, 44px);
+    --ease: cubic-bezier(.7, 0, .2, 1);
+    --split: 44vw;
+
+    /* Paper grain. */
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--plum);
+    color: var(--cream);
+    font-family: var(--type);
+    font-size: clamp(14px, 1vw, 16px);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--gold); color: var(--plum); }
+
+  /* Grain sits over everything, like the tooth of the paper. */
+  .paper, .reader { isolation: isolate; }
+  /* Grain over everything; the uneven tone comes from the gradients beneath. */
+  .paper::after, .reader::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--grain);
+    background-size: 220px;
+    mix-blend-mode: soft-light;
+    z-index: 5;
+  }
+  .paper::after { opacity: .55; }
+  .reader::before { position: fixed; left: auto; width: inherit; opacity: .7; }
+
+  /* ---------- Masthead: the plum cover ---------- */
+
+  .masthead {
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: 100vw;
+    overflow: hidden;
+    container-type: inline-size;
+    display: flex;
+    flex-direction: column;
+    background:
+      radial-gradient(120% 90% at 30% 20%, var(--plum) 40%, var(--plum-deep) 100%);
+    transition: width .9s var(--ease);
+  }
+  .is-open .masthead { width: var(--split); }
+
+  .masthead__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--pad);
+    padding: var(--pad);
+    position: relative;
+    z-index: 6;
+    transition: opacity .4s;
+  }
+
+  .contents {
+    margin-top: auto;
+    padding: 0 var(--pad) calc(var(--pad) * 1.3);
+    position: relative;
+    z-index: 6;
+    transition: opacity .4s;
+  }
+
+  .name {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(22px, 1.9vw, 30px);
+    line-height: 1;
+    letter-spacing: -.005em;
+  }
+  .name a:hover { color: var(--gold); }
+  .role {
+    margin: .7em 0 0;
+    color: var(--gold);
+    font-size: .8em;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+  }
+
+  /* The chapters are the cover: set large, sized to the width of the plum
+     panel so they shrink with it when a page opens. */
+  .index { --big: min(10.5cqw, 15vh); list-style: none; margin: 0; padding: 0; }
+  .index li + li { margin-top: calc(var(--big) * .16); }
+  .index a { display: grid; grid-template-columns: 4.5em auto 1fr; align-items: baseline; }
+  .index .no { font-size: .8em; color: var(--gold); letter-spacing: .04em; }
+  .index .t {
+    font-family: var(--display);
+    font-variation-settings: "opsz" 96;
+    font-size: var(--big);
+    line-height: .92;
+    letter-spacing: -.025em;
+    transition: color .3s;
+  }
+  .index .s { grid-column: 2 / span 2; margin-top: .5em; font-size: .8em; color: var(--gold); opacity: .8; }
+  @container (max-width: 600px) {
+    .index { --big: 17cqw; }
+    .index a { grid-template-columns: 3.4em auto 1fr; }
+  }
+  .index a:hover .t,
+  .index a:focus-visible .t { color: var(--gold); }
+  a:focus-visible { outline: 1px dotted var(--gold); outline-offset: 6px; }
+
+  /* The open chapter turns to gold italic and draws a rule across to its page. */
+  .index .rule {
+    align-self: center;
+    height: 1px;
+    margin: 0 calc(-1 * var(--pad)) 0 .7em;
+    background: var(--gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform .8s .35s var(--ease);
+  }
+  .index a[aria-current="page"] .t { color: var(--gold); font-style: italic; }
+  .index a[aria-current="page"] .rule { transform: scaleX(1); }
+
+  .colophon {
+    margin: 0;
+    text-align: right;
+    font-size: .8em;
+    line-height: 1.6;
+    color: var(--gold);
+  }
+  @container (max-width: 600px) { .colophon { display: none; } }
+  .is-open .colophon { display: none; }
+
+  /* ---------- Reader: the cream page ---------- */
+
+  .reader {
+    position: fixed;
+    top: 0; right: 0; bottom: 0;
+    width: calc(100vw - var(--split));
+    background:
+      radial-gradient(140% 100% at 70% 0%, #F6EDDD 30%, #E9DCC5 100%);
+    color: var(--plum);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    transform: translateX(100%);
+    transition: transform .9s var(--ease), box-shadow .9s var(--ease);
+  }
+  .is-open .reader { transform: none; box-shadow: -14px 0 40px rgba(40, 6, 22, .28); }
+
+  .reader__bar {
+    position: sticky;
+    top: 0;
+    display: flex;
+    justify-content: space-between;
+    padding: var(--pad);
+    font-size: .8em;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    background: linear-gradient(#F6EDDE 55%, rgba(246, 237, 222, 0));
+    z-index: 6;
+  }
+  .reader__bar span { color: var(--ochre); }
+  .reader__bar a:hover { color: var(--ochre); }
+
+  .chapter {
+    position: relative;
+    z-index: 1;
+    display: none;
+    max-width: 41rem;
+    margin: 0 auto;
+    padding: clamp(24px, 6vh, 80px) var(--pad) clamp(64px, 14vh, 160px);
+  }
+  .chapter.is-active { display: block; }
+
+  .kicker { margin: 0; font-size: .8em; color: var(--ochre); letter-spacing: .14em; text-transform: uppercase; }
+  .chapter h2 {
+    margin: .05em 0 .45em;
+    font-family: var(--display);
+    font-variation-settings: "opsz" 96;
+    font-weight: 400;
+    font-size: clamp(72px, 9vw, 160px);
+    line-height: .9;
+    letter-spacing: -.035em;
+    margin-left: -.05em;
+  }
+
+  .lede {
+    display: flow-root;
+    margin: 0 0 1.4em;
+    font-family: var(--display);
+    font-variation-settings: "opsz" 14;
+    font-size: clamp(20px, 1.6vw, 26px);
+    line-height: 1.4;
+    text-wrap: balance;
+  }
+  .lede::first-letter {
+    float: left;
+    font-variation-settings: "opsz" 96;
+    font-size: 4.25em;
+    line-height: .78;
+    margin: .07em .08em -.1em -.04em;
+    color: var(--gold);
+  }
+
+  .lede--plain::first-letter { all: unset; }
+
+  .prose p {
+    margin: 0;
+    font-size: clamp(14px, 1vw, 16px);
+    line-height: 1.7;
+  }
+  .prose p + p { text-indent: 3em; }
+
+  .pull {
+    margin: 2.2em 0;
+    padding: .7em 0 0;
+    border-top: 1px solid var(--gold);
+    font-family: var(--display);
+    font-variation-settings: "opsz" 72;
+    font-style: italic;
+    font-size: clamp(30px, 2.8vw, 46px);
+    line-height: 1.12;
+    letter-spacing: -.01em;
+  }
+
+  .group { margin-top: 3em; }
+  .group h3 {
+    margin: 0 0 .9em;
+    font-weight: 400;
+    font-size: .8em;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--ochre);
+  }
+  .rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--rule); }
+  .rows li {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    align-items: baseline;
+    gap: 1.5em;
+    padding: .75em 0;
+    border-top: 1px solid var(--rule);
+  }
+  .rows .v { font-family: var(--display); font-size: clamp(18px, 1.35vw, 22px); line-height: 1.3; }
+  .rows .meta { font-size: .9em; color: var(--ochre); text-align: right; font-variant-numeric: tabular-nums; }
+  .rows--wide li { grid-template-columns: 7.5em 1fr; }
+  .rows--wide .meta { text-align: left; order: -1; letter-spacing: .14em; text-transform: uppercase; font-size: .8em; }
+
+  .email {
+    display: inline-block;
+    margin-top: .1em;
+    font-family: var(--display);
+    font-size: clamp(30px, 3.2vw, 54px);
+    letter-spacing: -.02em;
+    border-bottom: 1px solid var(--gold);
+    transition: color .3s;
+    word-break: break-word;
+  }
+  .email:hover { color: var(--ochre); }
+
+  .next {
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    margin-top: 5em;
+    padding-top: .9em;
+    border-top: 1px solid var(--plum);
+  }
+  .next span { font-size: .8em; color: var(--ochre); letter-spacing: .14em; text-transform: uppercase; }
+  .next a { font-family: var(--display); font-size: clamp(32px, 3vw, 52px); letter-spacing: -.02em; transition: color .3s; }
+  .next a:hover { color: var(--ochre); }
+
+  /* ---------- Small screens: the page slides over the cover ---------- */
+
+  .stripe { display: none; }
+
+  @media (max-width: 760px) {
+    :root { --split: 0vw; --stripe: 40px; }
+    .is-open .masthead { width: 100vw; }
+    .reader { width: calc(100vw - var(--stripe)); }
+    .is-open .reader { box-shadow: -8px 0 24px rgba(40, 6, 22, .3); }
+    .is-open .masthead__top,
+    .is-open .contents { opacity: 0; pointer-events: none; }
+
+    /* What stays of the cover: a wine stripe with her name, back to the cover. */
+    .stripe {
+      display: block;
+      position: fixed;
+      top: 0; left: 0; bottom: 0;
+      width: var(--stripe);
+      padding: var(--pad) 0;
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      text-align: right;
+      font-size: .72em;
+      letter-spacing: .2em;
+      text-transform: uppercase;
+      color: var(--gold);
+      line-height: var(--stripe);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity .5s .4s;
+    }
+    .is-open .stripe { opacity: 1; pointer-events: auto; }
+    .rows--wide li { grid-template-columns: 1fr; gap: .3em; }
+    .lede { text-wrap: pretty; }   /* too many lines on a phone for balance */
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .masthead, .reader, .index .rule, .stripe { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="masthead paper">
+  <div class="masthead__top">
+    <div>
+      <h1 class="name"><a href="#">Shira Sue Carmi</a></h1>
+      <p class="role">CEO, Advisor, Teacher</p>
+    </div>
+    <p class="colophon">Brooklyn,<br>New York</p>
+  </div>
+  <nav class="contents" aria-label="Sections">
+      <ul class="index">
+        <li><a href="#past"><span class="no">N°1</span><span class="t">Past</span><span class="rule"></span><span class="s">Operator, 2005–2024</span></a></li>
+        <li><a href="#present"><span class="no">N°2</span><span class="t">Present</span><span class="rule"></span><span class="s">Advisor, Teacher</span></a></li>
+        <li><a href="#future"><span class="no">N°3</span><span class="t">Future</span><span class="rule"></span><span class="s">Inquiries</span></a></li>
+      </ul>
+  </nav>
+</header>
+
+<a class="stripe" href="#" aria-label="Back to the cover">Shira Sue Carmi</a>
+
+<main class="reader" tabindex="-1" inert>
+  <div class="reader__bar">
+    <span>SSC — <b class="running" style="font-weight:400"></b></span>
+    <a href="#">Close</a>
+  </div>
+
+  <section class="chapter" id="past" aria-labelledby="past-h">
+    <p class="kicker">N°1 — Operator, 2005–2024</p>
+    <h2 id="past-h">Past</h2>
+    <p class="lede">Nearly twenty years on the inside&nbsp;— founding, scaling and running companies. Every piece of advice was first a decision she had to make herself.</p>
+
+    <div class="group">
+      <h3>Selected experience</h3>
+      <ul class="rows">
+        <li><span class="v">Altuzarra</span><span class="meta">CEO, 2020–2024</span></li>
+        <li><span class="v">Mansur Gavriel</span><span class="meta">President, 2017–2019</span></li>
+        <li><span class="v">Launch Collective</span><span class="meta">Founding Partner, 2005–2017</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3>Education</h3>
+      <ul class="rows">
+        <li><span class="v">Columbia Business School</span><span class="meta">MBA, 2003–2005</span></li>
+        <li><span class="v">New York University, Gallatin School of Individualized Study</span><span class="meta">BA, 1999–2002</span></li>
+      </ul>
+    </div>
+
+    <div class="next"><span>Next</span><a href="#present">Present</a></div>
+  </section>
+
+  <section class="chapter" id="present" aria-labelledby="present-h">
+    <p class="kicker">N°2 — Advisor, Teacher</p>
+    <h2 id="present-h">Present</h2>
+    <p class="lede">Shira Sue Carmi is a close advisor to founders and CEOs&nbsp;— most of them women&nbsp;— navigating growth, uncertainty and change. She has built and run the businesses herself. The advice begins with the numbers. It does not end there.</p>
+
+    <div class="prose">
+      <p>The work pairs financial analysis, strategy and a bias for results with what is usually left out of the room: the whole person. Instinct, feeling and the body’s own reactions are treated as data, too.</p>
+    </div>
+
+    <p class="pull">“The business has to work for the CEO in the context of her life.”</p>
+
+    <div class="group">
+      <ul class="rows rows--wide">
+        <li><span class="v">Another Tomorrow, Cara Cara, Jamie Haller, Ruti, Oriane 1986, Underwater Weaving and others</span><span class="meta">Clients</span></li>
+        <li><span class="v">Guess Distinguished Chair in Fashion and Fashion Business, Gallatin School of Individualized Study, New York University</span><span class="meta">Teaching</span></li>
+        <li><span class="v">Brooklyn, New York</span><span class="meta">Based</span></li>
+      </ul>
+    </div>
+
+    <div class="next"><span>Next</span><a href="#future">Future</a></div>
+  </section>
+
+  <section class="chapter" id="future" aria-labelledby="future-h">
+    <p class="kicker">N°3 — Inquiries</p>
+    <h2 id="future-h">Future</h2>
+    <p class="lede lede--plain">Advisory, speaking and board positions.</p>
+
+    <div class="prose">
+      <p>Most conversations begin with an introduction. This one can begin with an email.</p>
+    </div>
+
+    <div class="group">
+      <h3>For all inquiries</h3>
+      <a class="email" href="mailto:ssc@shirasuecarmi.com">ssc@shirasuecarmi.com</a>
+    </div>
+
+    <div class="next"><span>Back to</span><a href="#past">Past</a></div>
+  </section>
+</main>
+
+<script>
+  const root = document.documentElement;
+  const reader = document.querySelector('.reader');
+  const running = document.querySelector('.running');
+  const chapters = [...document.querySelectorAll('.chapter')];
+  const links = [...document.querySelectorAll('.index a')];
+
+  function route() {
+    const id = location.hash.slice(1);
+    const active = chapters.find(c => c.id === id);
+    root.classList.toggle('is-open', !!active);
+    reader.inert = !active;
+    chapters.forEach(c => c.classList.toggle('is-active', c === active));
+    links.forEach(a => a.hash === '#' + id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    if (active) {
+      running.textContent = active.querySelector('h2').textContent;
+      reader.scrollTop = 0;
+      document.title = running.textContent + ' — Shira Sue Carmi';
+    } else {
+      document.title = 'Shira Sue Carmi';
+    }
+  }
+
+  addEventListener('hashchange', route);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && root.classList.contains('is-open')) location.hash = ''; });
+  route();
+</script>
+</body>
+</html>
