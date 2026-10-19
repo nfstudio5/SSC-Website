@@ -17,6 +17,7 @@
     --ink: #2E1A22;                                      /* reading text: plum-black */
     --gold: #A8791E;                                     /* labels and hairlines */
     --hair: rgba(168, 121, 30, .45);
+    --black: #141210;          --grey: #7A716A;          /* the cover's text while a page is open */
 
     --display: "Bodoni Moda", Didot, "Bodoni 72", serif;
     --sans: "Jost", "Futura PT", Futura, sans-serif;
@@ -112,6 +113,25 @@
   }
   .is-open .reader { transform: none; }
 
+  /* Each chapter has its own sheet: the reader re-points the palette. */
+  .reader { color: var(--ink); transition: transform .9s var(--ease), background-color .6s, color .6s; }
+  .reader[data-tone] { border-left: 0; }
+  .reader[data-tone="past"] {     /* plum, with ivory and a light gold */
+    --paper-light: #731A45; --plum: #F4EFE6; --ink: #F1E9DD; --gold: #E0B564; --hair: rgba(244, 239, 230, .28);
+  }
+  .reader[data-tone="present"] {  /* antique gold, with plum-black and deep plum */
+    --paper-light: #C9A063; --plum: #4A0E2C; --ink: #22161A; --gold: #5C1838; --hair: rgba(34, 22, 26, .28);
+  }
+  .reader[data-tone="future"] {   /* near-black, with ivory and gold */
+    --paper-light: #171314; --plum: #F4EFE6; --ink: #DDD5C9; --gold: #C8901A; --hair: rgba(200, 144, 26, .4);
+  }
+  .reader[data-tone]::before { mix-blend-mode: soft-light; opacity: .35; }
+
+  /* The cover steps back to black and lighter black beside a coloured page. */
+  .is-open .name, .is-open .index .t { color: var(--black); }
+  .is-open .role, .is-open .index .s { color: var(--grey); }
+  .is-open .name a:hover, .is-open .index a:hover .t { color: var(--plum); }
+
   .reader__bar {
     position: sticky; top: 0; z-index: 6;
     display: flex; justify-content: space-between;
@@ -174,7 +194,7 @@
 
     .stripe {
       display: block; position: fixed; inset: 0 auto 0 0; width: var(--stripe);
-      background: var(--plum);
+      background: var(--black);
       opacity: 0; pointer-events: none; transition: opacity .5s .4s;
     }
     .is-open .stripe { opacity: 1; pointer-events: auto; }
@@ -291,6 +311,7 @@
     const active = chapters.find(c => c.id === id);
     root.classList.toggle('is-open', !!active);
     reader.inert = !active;
+    if (active) reader.dataset.tone = id;
     chapters.forEach(c => c.classList.toggle('is-active', c === active));
     links.forEach(a => a.hash === '#' + id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
     if (active) {

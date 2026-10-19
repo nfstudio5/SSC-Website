@@ -1,0 +1,336 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="robots" content="noindex, nofollow">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Shira Sue Carmi</title>
+<meta name="description" content="Shira Sue Carmi — advisor to founders and CEOs. Brooklyn, New York.">
+<meta name="theme-color" content="#F4EFE6">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;1,6..96,400&family=Jost:wght@300;400&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
+<style>
+  /* PALETTE: every colour on the page comes from these lines. */
+  :root {
+    --paper: #F4EFE6;          --paper-light: #FAF7F1;   --paper-deep: #E8E0D2;
+    --plum: #731A45;                                     /* headings and the index */
+    --ink: #2E1A22;                                      /* reading text: plum-black */
+    --gold: #A8791E;                                     /* labels and hairlines */
+    --hair: rgba(168, 121, 30, .45);
+    --black: #141210;          --grey: #7A716A;          /* the cover's text while a page is open */
+
+    --display: "Bodoni Moda", Didot, "Bodoni 72", serif;
+    --sans: "Jost", "Futura PT", Futura, sans-serif;
+    --serif: "Newsreader", Georgia, serif;
+    --pad: clamp(20px, 3vw, 52px);
+    --ease: cubic-bezier(.7, 0, .2, 1);
+    --split: 42vw;
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--paper);
+    color: var(--ink);
+    font: 400 clamp(15px, 1.05vw, 17px)/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  a { color: inherit; text-decoration: none; }
+  ::selection { background: var(--plum); color: var(--paper); }
+  a:focus-visible { outline: 1px dotted var(--gold); outline-offset: 5px; }
+
+  .label { margin: 0; font-size: .7rem; font-weight: 400; letter-spacing: .24em; text-transform: uppercase; color: var(--gold); }
+
+  /* Paper: a fine tooth over everything. */
+  .cover::after, .reader::before {
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5;
+    background: var(--grain) 0 0 / 220px; mix-blend-mode: multiply; opacity: .09;
+  }
+  .reader::before { position: fixed; left: auto; width: inherit; }
+
+  /* ---------- The cover ---------- */
+
+  .cover {
+    position: fixed; inset: 0 auto 0 0; width: 100vw;
+    overflow: hidden; container-type: inline-size;
+    background: radial-gradient(120% 100% at 30% 15%, var(--paper-light) 0%, var(--paper) 50%, var(--paper-deep) 100%);
+    transition: width .9s var(--ease);
+  }
+  .is-open .cover { width: var(--split); }
+
+  /* Cover text: the design from v6 (Jost, name and title at left, the
+     index beside it), set in this palette. */
+  .cover__top {
+    position: relative; z-index: 6;
+    display: grid; grid-template-columns: 1fr 1fr; gap: 2.2em var(--pad);
+    padding: var(--pad);
+    font: 400 clamp(16px, 1.15vw, 19px)/1.5 var(--sans);
+  }
+  @container (max-width: 820px) { .cover__top { grid-template-columns: 1fr; } }
+  .name { margin: 0; font: inherit; letter-spacing: .01em; color: var(--plum); }
+  .name a:hover { color: var(--gold); }
+  .role { margin: .15em 0 0; color: var(--gold); }
+
+  .index { list-style: none; margin: 0; padding: 0; }
+  .index li + li { margin-top: 1.05em; }
+  .index a { display: inline-block; transition: opacity .4s; }
+  .index .t { display: block; color: var(--plum); transition: color .3s; }
+  .index .s { display: block; color: var(--gold); opacity: .8; font-size: .82em; margin-top: .1em; }
+  .index a:hover .t, .index a:focus-visible .t { color: var(--gold); }
+  .index a[aria-current="page"] { opacity: .4; }
+
+  /* The initials: blind-pressed into the paper. Monumental, cropped, and only
+     there when the light catches the edges. They stay on the cover throughout. --reserve keeps them clear of the
+     index (set by script); .102 is the gap above the ink in Bodoni Moda. */
+  .monogram {
+    --F: 84cqw; --vis: .5;
+    position: absolute; left: 50%; z-index: 1;
+    top: calc(max(var(--reserve, 0px), 100% - var(--F) * var(--vis)) - var(--F) * .102);
+    margin: 0;
+    font: 400 var(--F)/1 var(--display);
+    font-variation-settings: "opsz" 96;
+    letter-spacing: -.055em; white-space: nowrap;
+    color: var(--paper);
+    text-shadow: -1.5px -1.5px 1px rgba(90, 55, 40, .2), 1.5px 1.5px 1px rgba(255, 255, 255, .95);
+    transform: translateX(-50%);
+    transition: opacity .6s;
+    user-select: none; pointer-events: none;
+  }
+  @container (max-width: 600px) { .monogram { --F: 128cqw; --vis: .62; transform: translateX(-46%); } }
+
+  /* ---------- The page ---------- */
+
+  .reader {
+    position: fixed; top: 0; right: 0; bottom: 0;
+    width: calc(100vw - var(--split));
+    background: var(--paper-light);
+    border-left: 1px solid var(--hair);
+    overflow-y: auto; overscroll-behavior: contain;
+    transform: translateX(100%);
+    transition: transform .9s var(--ease);
+  }
+  .is-open .reader { transform: none; }
+
+  /* Each chapter has its own sheet: the reader re-points the palette. */
+  .reader { color: var(--ink); transition: transform .9s var(--ease), background-color .6s, color .6s; }
+  .reader[data-tone] { border-left: 0; }
+  .reader[data-tone="past"] {     /* plum, with ivory and a light gold */
+    --paper-light: #731A45; --plum: #F4EFE6; --ink: #F1E9DD; --gold: #E0B564; --hair: rgba(244, 239, 230, .28);
+  }
+  .reader[data-tone="present"] {  /* antique gold, with plum-black and deep plum */
+    --paper-light: #C9A063; --plum: #4A0E2C; --ink: #22161A; --gold: #5C1838; --hair: rgba(34, 22, 26, .28);
+  }
+  .reader[data-tone="future"] {   /* near-black, with ivory and gold */
+    --paper-light: #171314; --plum: #F4EFE6; --ink: #DDD5C9; --gold: #C8901A; --hair: rgba(200, 144, 26, .4);
+  }
+  .reader[data-tone]::before { mix-blend-mode: soft-light; opacity: .35; }
+
+  /* The cover steps back to black and lighter black beside a coloured page. */
+  .is-open .name, .is-open .index .t { color: var(--black); }
+  .is-open .role, .is-open .index .s { color: var(--grey); }
+  .is-open .name a:hover, .is-open .index a:hover .t { color: var(--plum); }
+
+  .reader__bar {
+    position: sticky; top: 0; z-index: 6;
+    display: flex; justify-content: space-between;
+    padding: var(--pad) var(--pad) 1.4rem;
+    background: linear-gradient(var(--paper-light) 65%, transparent);
+  }
+  .reader__bar a { color: var(--plum); }
+
+  .chapter { position: relative; z-index: 1; display: none; max-width: 38rem; margin: 0 auto; padding: clamp(16px, 5vh, 64px) var(--pad) clamp(64px, 14vh, 160px); }
+  .chapter.is-active { display: block; }
+
+  .chapter h2 {
+    margin: .35em 0 .5em -.04em;
+    font: 400 clamp(56px, 6vw, 104px)/.95 var(--display);
+    font-variation-settings: "opsz" 96;
+    letter-spacing: -.02em;
+    color: var(--plum);
+  }
+  .lede { margin: 0 0 1.4em; font: 400 clamp(20px, 1.6vw, 26px)/1.36 var(--sans); text-wrap: pretty; }
+  .prose p { margin: 0; font: 300 clamp(16px, 1.1vw, 18px)/1.65 var(--serif); }
+
+  .pull {
+    margin: 2.6em 0; padding: 1em 0;
+    border-block: 1px solid var(--hair);
+    font: italic 400 clamp(26px, 2.3vw, 38px)/1.2 var(--display);
+    color: var(--plum);
+    text-align: center;
+  }
+
+  .group { margin-top: 2.8em; }
+  .group .label { margin-bottom: .9em; }
+  .rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--hair); }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: 1.5em; align-items: baseline; padding: .75em 0; border-top: 1px solid var(--hair); line-height: 1.4; }
+  .rows .v { font: 400 clamp(17px, 1.25vw, 20px)/1.3 var(--display); color: var(--plum); }
+  .rows .meta { font-size: .82em; color: var(--gold); text-align: right; font-variant-numeric: tabular-nums; }
+  .rows--wide li { grid-template-columns: 7rem 1fr; }
+  .rows--wide .meta { order: -1; text-align: left; font-size: .7rem; letter-spacing: .24em; text-transform: uppercase; }
+
+  .email {
+    display: inline-block;
+    font: italic 400 clamp(26px, 2.8vw, 46px)/1.2 var(--display);
+    color: var(--plum);
+    border-bottom: 1px solid var(--hair);
+    transition: border-color .3s;
+  }
+  .email:hover { border-color: var(--plum); }
+
+  .next { display: flex; justify-content: space-between; align-items: baseline; margin-top: 5em; padding-top: 1em; border-top: 1px solid var(--hair); }
+  .next a { font: italic 400 clamp(28px, 2.6vw, 42px) var(--display); color: var(--plum); }
+
+  .stripe { display: none; }
+
+  /* ---------- Phones: the page leaves a thin plum stripe at the left ---------- */
+
+  @media (max-width: 760px) {
+    :root { --split: 0vw; --stripe: 22px; }
+    .is-open .cover { width: 100vw; }
+    .reader { width: calc(100vw - var(--stripe)); border-left: 0; }
+    .rows--wide li { grid-template-columns: 1fr; gap: .2em; }
+
+    .stripe {
+      display: block; position: fixed; inset: 0 auto 0 0; width: var(--stripe);
+      background: var(--black);
+      opacity: 0; pointer-events: none; transition: opacity .5s .4s;
+    }
+    .is-open .stripe { opacity: 1; pointer-events: auto; }
+
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .cover, .reader, .monogram, .stripe { transition: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="cover__top">
+    <div>
+      <h1 class="name"><a href="#">Shira Sue Carmi</a></h1>
+      <p class="role">CEO, Advisor, Teacher</p>
+    </div>
+    <nav aria-label="Sections">
+      <ul class="index">
+        <li><a href="#past"><span class="t">Past</span><span class="s">Operator · 2005–2024</span></a></li>
+        <li><a href="#present"><span class="t">Present</span><span class="s">Advisor · Teacher</span></a></li>
+        <li><a href="#future"><span class="t">Future</span><span class="s">Inquiries</span></a></li>
+      </ul>
+    </nav>
+  </div>
+
+  <p class="monogram" aria-hidden="true">SSC</p>
+
+</header>
+
+<a class="stripe" href="#" aria-label="Back to the cover"></a>
+
+<main class="reader" tabindex="-1" inert>
+  <div class="reader__bar">
+    <span class="label">SSC — <span class="running"></span></span>
+    <a class="label" href="#" style="color: var(--plum)">Close</a>
+  </div>
+
+  <section class="chapter" id="past" aria-labelledby="past-h">
+    <p class="label">Operator, 2005–2024</p>
+    <h2 id="past-h">Past</h2>
+    <p class="lede">Nearly twenty years on the inside&nbsp;— founding, scaling and running companies. Every piece of advice was first a decision she had to make herself.</p>
+
+    <div class="group">
+      <h3 class="label">Selected experience</h3>
+      <ul class="rows">
+        <li><span class="v">Altuzarra</span><span class="meta">CEO, 2020–2024</span></li>
+        <li><span class="v">Mansur Gavriel</span><span class="meta">President, 2017–2019</span></li>
+        <li><span class="v">Launch Collective</span><span class="meta">Founding Partner, 2005–2017</span></li>
+      </ul>
+    </div>
+
+    <div class="group">
+      <h3 class="label">Education</h3>
+      <ul class="rows">
+        <li><span class="v">Columbia Business School</span><span class="meta">MBA, 2003–2005</span></li>
+        <li><span class="v">New York University, Gallatin School of Individualized Study</span><span class="meta">BA, 1999–2002</span></li>
+      </ul>
+    </div>
+
+    <div class="next"><span class="label">Next</span><a href="#present">Present</a></div>
+  </section>
+
+  <section class="chapter" id="present" aria-labelledby="present-h">
+    <p class="label">Advisor, Teacher</p>
+    <h2 id="present-h">Present</h2>
+    <p class="lede">Shira Sue Carmi is a close advisor to founders and CEOs&nbsp;— most of them women&nbsp;— navigating growth, uncertainty and change. She has built and run the businesses herself. The advice begins with the numbers. It does not end there.</p>
+
+    <div class="prose">
+      <p>The work pairs financial analysis, strategy and a bias for results with what is usually left out of the room: the whole person. Instinct, feeling and the body’s own reactions are treated as data, too.</p>
+    </div>
+
+    <p class="pull">The business has to work for the CEO in the context of her life.</p>
+
+    <div class="group">
+      <ul class="rows rows--wide">
+        <li><span class="v">Another Tomorrow, Cara Cara, Jamie Haller, Ruti, Oriane 1986, Underwater Weaving and others</span><span class="meta">Clients</span></li>
+        <li><span class="v">Guess Distinguished Chair in Fashion and Fashion Business, Gallatin School of Individualized Study, New York University</span><span class="meta">Teaching</span></li>
+        <li><span class="v">Brooklyn, New York</span><span class="meta">Based</span></li>
+      </ul>
+    </div>
+
+    <div class="next"><span class="label">Next</span><a href="#future">Future</a></div>
+  </section>
+
+  <section class="chapter" id="future" aria-labelledby="future-h">
+    <p class="label">Inquiries</p>
+    <h2 id="future-h">Future</h2>
+    <p class="lede">Advisory, speaking and board positions.</p>
+
+    <div class="prose">
+      <p>Most conversations begin with an introduction. This one can begin with an email.</p>
+    </div>
+
+    <div class="group">
+      <h3 class="label">For all inquiries</h3>
+      <a class="email" href="mailto:ssc@shirasuecarmi.com">ssc@shirasuecarmi.com</a>
+    </div>
+
+    <div class="next"><span class="label">Back to</span><a href="#past">Past</a></div>
+  </section>
+</main>
+
+<script>
+  const root = document.documentElement;
+  const reader = document.querySelector('.reader');
+  const running = document.querySelector('.running');
+  const chapters = [...document.querySelectorAll('.chapter')];
+  const links = [...document.querySelectorAll('.index a')];
+  function route() {
+    const id = location.hash.slice(1);
+    const active = chapters.find(c => c.id === id);
+    root.classList.toggle('is-open', !!active);
+    reader.inert = !active;
+    if (active) reader.dataset.tone = id;
+    chapters.forEach(c => c.classList.toggle('is-active', c === active));
+    links.forEach(a => a.hash === '#' + id ? a.setAttribute('aria-current', 'page') : a.removeAttribute('aria-current'));
+    if (active) {
+      running.textContent = active.querySelector('h2').textContent;
+      reader.scrollTop = 0;
+      document.title = running.textContent + ' — Shira Sue Carmi';
+    } else {
+      document.title = 'Shira Sue Carmi';
+    }
+  }
+
+  const cover = document.querySelector('.cover');
+  const head = document.querySelector('.cover__top');
+  new ResizeObserver(() => cover.style.setProperty('--reserve', head.offsetHeight + 12 + 'px')).observe(head);
+
+  addEventListener('hashchange', route);
+  addEventListener('keydown', e => { if (e.key === 'Escape' && root.classList.contains('is-open')) location.hash = ''; });
+  route();
+</script>
+</body>
+</html>
