@@ -31,8 +31,9 @@
   /* PALETTE: every colour on the page comes from these lines. */
   :root {
     --cover-bg: #F5F0E6;       --cover-bg-deep: #E4DCCC;
-    --cover-text: #141210;     --cover-accent: #A8750F;   /* ink, with gold (a shade deeper, to read at small sizes) */
-    --mark: #C8901A;                                       /* the SSC, in gold */
+    --cover-text: #141210;     --cover-detail: #731A45;   /* ink, with plum for the lines under each section */
+    --cover-accent: #A8750F;                               /* gold accents: her title, hover, focus */
+    --mark: #731A45;                                       /* the SSC, in plum */
     --page-bg: #731A45;        --page-bg-deep: #561034;
     --page-text: #F3EDE1;      --page-label: #DDB066;     /* ivory, with a lighter gold for labels */
     --page-rule: rgba(243, 237, 225, .22);  --page-accent: #C8901A;
@@ -99,7 +100,7 @@
   .index li + li { margin-top: 1.05em; }
   .index a { display: inline-block; transition: opacity .4s; }
   .index .t { display: block; transition: color .3s; }
-  .index .s { display: block; color: var(--cover-accent); opacity: .75; font-size: .82em; margin-top: .1em; }
+  .index .s { display: block; color: var(--cover-detail); opacity: .75; font-size: .82em; margin-top: .1em; }
   .index a:hover .t,
   .index a:focus-visible .t { color: var(--cover-accent); }
   .index a[aria-current="page"] { opacity: .4; }
