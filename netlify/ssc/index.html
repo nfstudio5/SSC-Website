@@ -3,6 +3,10 @@
 <head>
 <meta charset="utf-8">
 <meta name="robots" content="noindex, nofollow">
+<script>
+  // Links are relative to this folder, so the address must end in "/" (or index.html).
+  if (!/\/$|\.html$/.test(location.pathname)) location.replace(location.pathname + '/' + location.search + location.hash);
+</script>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Shira Sue Carmi — Directions</title>
 <meta name="theme-color" content="#731A45">
@@ -53,21 +57,22 @@
 
 <!--
   The directions. Each one is a self-contained page in its own folder:
-    /ssc/v1/index.html, /ssc/v2/index.html, ...
+    v1/index.html, v2/index.html, ... (links are relative, so the whole
+    folder works wherever it sits on the site)
   To change a version: replace that folder's index.html with the new file.
   To add one: make a new folder (v5) with its index.html and copy a <li> below.
   To remove one: delete its folder and its <li>.
 -->
 <ol>
-  <li><a href="/ssc/v1/"><span class="no">N°1</span><span class="t">Gentlewoman</span><span class="s">Futura, monumental SSC</span></a></li>
-  <li><a href="/ssc/v2/"><span class="no">N°2</span><span class="t">Vogue</span><span class="s">Bodoni, printed SSC</span></a></li>
-  <li><a href="/ssc/v3/"><span class="no">N°3</span><span class="t">Contents</span><span class="s">Bodoni, no initials</span></a></li>
-  <li><a href="/ssc/v4/"><span class="no">N°4</span><span class="t">Quotes</span><span class="s">Initials on the cover, her words inside</span></a></li>
-  <li><a href="/ssc/v5/"><span class="no">N°5</span><span class="t">Noir</span><span class="s">Gentlewoman with the printed SSC, black and ivory page</span></a></li>
-  <li><a href="/ssc/v6/"><span class="no">N°6</span><span class="t">Ivory</span><span class="s">Noir with black type on an ivory page</span></a></li>
-  <li><a href="/ssc/v7/"><span class="no">N°7</span><span class="t">Monochrome</span><span class="s">Black and ivory only</span></a></li>
-  <li><a href="/ssc/v8/"><span class="no">N°8</span><span class="t">Reveal</span><span class="s">Ivory cover, plum SSC, plum page</span></a></li>
-  <li><a href="/ssc/v9/"><span class="no">N°9</span><span class="t">Reveal, gold</span><span class="s">Ivory cover, plum SSC, gold accents, plum page</span></a></li>
+  <li><a href="v1/index.html"><span class="no">N°1</span><span class="t">Gentlewoman</span><span class="s">Futura, monumental SSC</span></a></li>
+  <li><a href="v2/index.html"><span class="no">N°2</span><span class="t">Vogue</span><span class="s">Bodoni, printed SSC</span></a></li>
+  <li><a href="v3/index.html"><span class="no">N°3</span><span class="t">Contents</span><span class="s">Bodoni, no initials</span></a></li>
+  <li><a href="v4/index.html"><span class="no">N°4</span><span class="t">Quotes</span><span class="s">Initials on the cover, her words inside</span></a></li>
+  <li><a href="v5/index.html"><span class="no">N°5</span><span class="t">Noir</span><span class="s">Gentlewoman with the printed SSC, black and ivory page</span></a></li>
+  <li><a href="v6/index.html"><span class="no">N°6</span><span class="t">Ivory</span><span class="s">Noir with black type on an ivory page</span></a></li>
+  <li><a href="v7/index.html"><span class="no">N°7</span><span class="t">Monochrome</span><span class="s">Black and ivory only</span></a></li>
+  <li><a href="v8/index.html"><span class="no">N°8</span><span class="t">Reveal</span><span class="s">Ivory cover, plum SSC, plum page</span></a></li>
+  <li><a href="v9/index.html"><span class="no">N°9</span><span class="t">Reveal, gold</span><span class="s">Ivory cover, plum SSC, gold accents, plum page</span></a></li>
 </ol>
 
 <p class="label">Brooklyn, New York</p>
