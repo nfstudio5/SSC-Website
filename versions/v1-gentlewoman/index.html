@@ -21,6 +21,8 @@
     --pad: clamp(20px, 2.6vw, 44px);
     --ease: cubic-bezier(.7, 0, .2, 1);
     --split: 44vw;
+    /* Paper grain. */
+    --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
   }
 
   * { box-sizing: border-box; }
@@ -36,6 +38,21 @@
   a { color: inherit; text-decoration: none; }
   ::selection { background: var(--gold); color: var(--plum); }
 
+  /* Grain over everything; the uneven tone comes from the gradients beneath. */
+  .paper, .reader { isolation: isolate; }
+  .paper::after, .reader::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--grain);
+    background-size: 220px;
+    mix-blend-mode: soft-light;
+    z-index: 5;
+  }
+  .paper::after { opacity: .5; }
+  .reader::before { position: fixed; left: auto; width: inherit; opacity: .65; }
+
   /* ---------- Masthead: the plum room ---------- */
 
   .masthead {
@@ -44,6 +61,7 @@
     width: 100vw;
     overflow: hidden;
     container-type: inline-size;
+    background: radial-gradient(120% 90% at 30% 20%, var(--plum) 40%, #601339 100%);
     transition: width .9s var(--ease);
   }
   .is-open .masthead { width: var(--split); }
@@ -74,19 +92,25 @@
   .index a[aria-current="page"] { opacity: .4; }
   a:focus-visible { outline: 1px solid var(--gold); outline-offset: 4px; }
 
-  /* The monumental initials: present, but partly below the fold of the page. */
+  /* The monumental initials: present, but partly below the fold of the page.
+     Sized so the C runs to the right edge. In Jost the ink of "SSC" spans
+     .038–1.641em across and starts .137em below the top of the line box;
+     --vis is how much of it shows, and it never rises above --reserve
+     (the bottom of the index, set by script). */
   .monogram {
+    --inset: calc(var(--pad) * .55);
+    --F: calc((100cqw + 4px - var(--inset)) / 1.603);
+    --vis: .593;
     position: absolute;
-    left: calc(var(--pad) * .55);
-    bottom: 0;
+    left: calc(var(--inset) - var(--F) * .038);
+    top: calc(max(var(--reserve, 0px), 100% - var(--F) * var(--vis)) - var(--F) * .137);
     margin: 0;
     font-weight: 400;
-    font-size: 57.5cqw;
+    font-size: var(--F);
     line-height: 1;
     letter-spacing: -.035em;
     color: var(--gold);
     white-space: nowrap;
-    transform: translateY(27%);
     user-select: none;
     pointer-events: none;
   }
@@ -97,14 +121,14 @@
     position: fixed;
     top: 0; right: 0; bottom: 0;
     width: calc(100vw - var(--split));
-    background: var(--cream);
+    background: radial-gradient(140% 100% at 70% 0%, #F6EDDF 30%, #E9DCC6 100%);
     color: var(--plum);
     overflow-y: auto;
     overscroll-behavior: contain;
     transform: translateX(100%);
-    transition: transform .9s var(--ease);
+    transition: transform .9s var(--ease), box-shadow .9s var(--ease);
   }
-  .is-open .reader { transform: none; }
+  .is-open .reader { transform: none; box-shadow: -14px 0 40px rgba(40, 6, 22, .25); }
 
   .reader__bar {
     position: sticky;
@@ -114,7 +138,7 @@
     padding: var(--pad);
     font-size: .82em;
     letter-spacing: .02em;
-    background: linear-gradient(var(--cream) 60%, rgba(244, 234, 219, 0));
+    background: linear-gradient(#F6EDDF 60%, rgba(246, 237, 223, 0));
     z-index: 1;
   }
   .reader__bar span { color: var(--ochre); }
@@ -216,7 +240,7 @@
   @media (max-width: 760px) {
     :root { --split: 0vw; }
     .is-open .masthead { width: 100vw; }
-    .reader { width: 100vw; }
+    .reader, .is-open .reader { width: 100vw; box-shadow: none; }
     .rows--wide li { grid-template-columns: 1fr; gap: .2em; }
   }
 
@@ -227,7 +251,7 @@
 </head>
 <body>
 
-<header class="masthead">
+<header class="masthead paper">
   <div class="masthead__top">
     <div>
       <h1 class="name"><a href="#">Shira Sue Carmi</a></h1>
@@ -337,6 +361,10 @@
       document.title = 'Shira Sue Carmi';
     }
   }
+
+  const masthead = document.querySelector('.masthead');
+  const head = document.querySelector('.masthead__top');
+  new ResizeObserver(() => masthead.style.setProperty('--reserve', head.offsetHeight + 12 + 'px')).observe(head);
 
   addEventListener('hashchange', route);
   addEventListener('keydown', e => { if (e.key === 'Escape' && root.classList.contains('is-open')) location.hash = ''; });
