@@ -45,7 +45,7 @@
 
   /* Paper: a fine tooth over everything. */
   .cover::after, .reader::before {
-    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 5;
+    content: ""; position: absolute; inset: 0; pointer-events: none; z-index: 7;
     background: var(--grain) 0 0 / 220px; mix-blend-mode: multiply; opacity: .09;
   }
   .reader::before { position: fixed; left: auto; width: inherit; }
@@ -119,8 +119,8 @@
   .reader[data-tone="past"] {     /* plum, with ivory and a light gold */
     --paper-light: #731A45; --plum: #F4EFE6; --ink: #F1E9DD; --gold: #E0B564; --hair: rgba(244, 239, 230, .28);
   }
-  .reader[data-tone="present"] {  /* antique gold, with plum-black and deep plum */
-    --paper-light: #C9A063; --plum: #4A0E2C; --ink: #22161A; --gold: #5C1838; --hair: rgba(34, 22, 26, .28);
+  .reader[data-tone="present"] {  /* her gold, the SSC gold of v2, with plum-black type */
+    --paper-light: #C8901A; --plum: #3D0A24; --ink: #1F0D15; --gold: #561434; --hair: rgba(31, 13, 21, .3);
   }
   .reader[data-tone="future"] {   /* near-black, with ivory and gold */
     --paper-light: #171314; --plum: #F4EFE6; --ink: #DDD5C9; --gold: #C8901A; --hair: rgba(200, 144, 26, .4);
@@ -128,15 +128,17 @@
   .reader[data-tone]::before { mix-blend-mode: soft-light; opacity: .35; }
 
   /* The cover steps back to black and lighter black beside a coloured page. */
-  .is-open .name, .is-open .index .t { color: var(--black); }
-  .is-open .role, .is-open .index .s { color: var(--grey); }
-  .is-open .name a:hover, .is-open .index a:hover .t { color: var(--plum); }
+  /* Beside a coloured page her name and title step back to black and lighter black. */
+  .is-open .name { color: var(--black); }
+  .is-open .role { color: var(--grey); }
+  .is-open .name a:hover { color: var(--plum); }
 
   .reader__bar {
     position: sticky; top: 0; z-index: 6;
     display: flex; justify-content: space-between;
     padding: var(--pad) var(--pad) 1.4rem;
-    background: linear-gradient(var(--paper-light) 65%, transparent);
+    background: var(--paper-light);
+    transition: background-color .6s;
   }
   .reader__bar a { color: var(--plum); }
 
@@ -159,6 +161,7 @@
     font: italic 400 clamp(26px, 2.3vw, 38px)/1.2 var(--display);
     color: var(--plum);
     text-align: center;
+    text-wrap: balance;
   }
 
   .group { margin-top: 2.8em; }
