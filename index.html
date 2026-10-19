@@ -17,7 +17,7 @@
     --ink: #2E1A22;                                      /* reading text: plum-black */
     --gold: #A8791E;                                     /* labels and hairlines */
     --hair: rgba(168, 121, 30, .45);
-    --black: #141210;          --grey: #7A716A;          /* the cover's text while a page is open */
+    --black: #141210;                                    /* the phone stripe */
 
     --display: "Bodoni Moda", Didot, "Bodoni 72", serif;
     --sans: "Jost", "Futura PT", Futura, sans-serif;
@@ -114,7 +114,9 @@
   .is-open .reader { transform: none; }
 
   /* Each chapter has its own sheet: the reader re-points the palette. */
-  .reader { color: var(--ink); transition: transform .9s var(--ease), background-color .6s, color .6s; }
+  .reader { color: var(--ink); }
+  .chapter.is-active { animation: page-in .5s ease both; }
+  @keyframes page-in { from { opacity: 0; } }
   .reader[data-tone] { border-left: 0; }
   .reader[data-tone="past"] {     /* plum, with ivory and a light gold */
     --paper-light: #731A45; --plum: #F4EFE6; --ink: #F1E9DD; --gold: #E0B564; --hair: rgba(244, 239, 230, .28);
@@ -128,17 +130,13 @@
   .reader[data-tone]::before { mix-blend-mode: soft-light; opacity: .35; }
 
   /* The cover steps back to black and lighter black beside a coloured page. */
-  /* Beside a coloured page her name and title step back to black and lighter black. */
-  .is-open .name { color: var(--black); }
-  .is-open .role { color: var(--grey); }
-  .is-open .name a:hover { color: var(--plum); }
+
 
   .reader__bar {
     position: sticky; top: 0; z-index: 6;
     display: flex; justify-content: space-between;
     padding: var(--pad) var(--pad) 1.4rem;
     background: var(--paper-light);
-    transition: background-color .6s;
   }
   .reader__bar a { color: var(--plum); }
 
@@ -165,6 +163,10 @@
   }
 
   .group { margin-top: 2.8em; }
+  .pull:has(+ .group .rows) { margin-bottom: 0; }
+  .pull + .group { margin-top: 0; }
+  .pull + .group .rows li:first-child { border-top: 0; }
+  .group:has(.rows) + .next { margin-top: 0; padding-top: 2.6em; border-top: 0; }
   .group .label { margin-bottom: .9em; }
   .rows { list-style: none; margin: 0; padding: 0; border-bottom: 1px solid var(--hair); }
   .rows li { display: grid; grid-template-columns: 1fr auto; gap: 1.5em; align-items: baseline; padding: .75em 0; border-top: 1px solid var(--hair); line-height: 1.4; }
@@ -206,6 +208,7 @@
 
   @media (prefers-reduced-motion: reduce) {
     .cover, .reader, .monogram, .stripe { transition: none; }
+    .chapter.is-active { animation: none; }
   }
 </style>
 </head>
