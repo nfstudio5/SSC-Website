@@ -14,8 +14,9 @@
     --plum: #731A45;
     --gold: #C8901A;
     --cream: #F3EDE1;          /* ivory: the light colour on the cover and the page */
-    --ochre: var(--gold);      /* small labels; gold reads clearly on black */
-    --rule: rgba(243, 237, 225, .2);
+    --ink: #141210;            /* near-black type on the ivory page */
+    --ochre: #8A5F0F;          /* gold, deepened for small text on ivory */
+    --rule: rgba(20, 18, 16, .2);
     --sans: "Jost", "Futura PT", Futura, "Century Gothic", sans-serif;
     --serif: "Newsreader", Georgia, serif;
     --display: "Bodoni Moda", "Didot", "Bodoni 72", serif;   /* the SSC only */
@@ -126,14 +127,14 @@
     .monogram { --F: 128cqw; --vis: .658; transform: translateX(-46%); }
   }
 
-  /* ---------- Reader: the black page ---------- */
+  /* ---------- Reader: the ivory page ---------- */
 
   .reader {
     position: fixed;
     top: 0; right: 0; bottom: 0;
     width: calc(100vw - var(--split));
-    background: radial-gradient(140% 100% at 70% 0%, #181614 30%, #0A0908 100%);
-    color: var(--cream);
+    background: radial-gradient(140% 100% at 70% 0%, #F7F2E8 30%, #E9E2D3 100%);
+    color: var(--ink);
     overflow-y: auto;
     overscroll-behavior: contain;
     transform: translateX(100%);
@@ -149,7 +150,7 @@
     padding: var(--pad);
     font-size: .82em;
     letter-spacing: .02em;
-    background: linear-gradient(#171513 60%, rgba(23, 21, 19, 0));
+    background: linear-gradient(#F6F1E7 60%, rgba(246, 241, 231, 0));
     z-index: 1;
   }
   .reader__bar span { color: var(--ochre); }
@@ -240,7 +241,7 @@
     align-items: baseline;
     margin-top: 5em;
     padding-top: .9em;
-    border-top: 1px solid var(--cream);
+    border-top: 1px solid var(--ink);
   }
   .next span { font-size: .82em; color: var(--ochre); }
   .next a { font-size: clamp(28px, 2.6vw, 44px); letter-spacing: -.015em; transition: color .3s; }
